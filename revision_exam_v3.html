@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révision Examen — Study Mode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --bg-card-hover: #22222e;
+      --text-primary: #f0f0f5;
+      --text-secondary: #a0a0b0;
+      --text-muted: #606070;
+      --accent-leadership: #6366f1;
+      --accent-leadership-glow: #818cf8;
+      --accent-management: #10b981;
+      --accent-management-glow: #34d399;
+      --border-subtle: rgba(255,255,255,0.08);
+      --border-active: rgba(255,255,255,0.15);
+      --glass-bg: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Animated background */
+    .bg-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(16,185,129,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.03) 0%, transparent 70%);
+    }
+
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+    }
+
+    /* Header */
+    .header {
+      position: relative;
+      z-index: 10;
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(99,102,241,0.05) 0%, transparent 100%);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-badge span {
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 0%, #a0a0b0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Navigation */
+    .nav-container {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 2rem 0;
+    }
+
+    .unit-tabs {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+      background: var(--glass-bg);
+    }
+
+    .tab.active {
+      color: var(--text-primary);
+    }
+
+    .tab.active[data-unit="leadership"] {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0.1) 100%);
+      box-shadow: 0 0 30px rgba(99,102,241,0.15);
+    }
+
+    .tab.active[data-unit="management"] {
+      background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.1) 100%);
+      box-shadow: 0 0 30px rgba(16,185,129,0.15);
+    }
+
+    .tab-icon {
+      font-size: 1.5rem;
+    }
+
+    .tab-label {
+      font-weight: 600;
+    }
+
+    .tab-sub {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    /* Main content */
+    .main {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 4rem;
+    }
+
+    /* Mode tabs */
+    .mode-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .mode-btn {
+      padding: 0.6rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .mode-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .mode-btn.active {
+      color: var(--text-primary);
+      border-color: transparent;
+    }
+
+    .mode-btn.active[data-mode="flash"] {
+      background: linear-gradient(135deg, var(--accent-leadership) 0%, #4f46e5 100%);
+    }
+
+    .mode-btn.active[data-mode="qcm"] {
+      background: linear-gradient(135deg, var(--accent-management) 0%, #059669 100%);
+    }
+
+    .mode-btn.active[data-mode="situations"] {
+      background: linear-gradient(135deg, var(--accent-leadership) 0%, #4f46e5 100%);
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .stats-bar span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 3px;
+      height: 1rem;
+      background: var(--accent-leadership);
+      border-radius: 2px;
+    }
+
+    .section-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(99,102,241,0.03) 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-active);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card.flipped {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(99,102,241,0.05) 100%);
+      border-color: rgba(99,102,241,0.3);
+    }
+
+    .card.flipped::before {
+      opacity: 1;
+    }
+
+    .card-q {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .card-a {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+      line-height: 1.7;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      background: rgba(99,102,241,0.2);
+      color: var(--accent-leadership-glow);
+      border-radius: 6px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .card.flipped .badge {
+      background: var(--accent-leadership);
+      color: #fff;
+    }
+
+    /* QCM Styles */
+    .qcm-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .qcm-q {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .qcm-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+
+    .qcm-option:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-active);
+    }
+
+    .qcm-option.correct {
+      background: rgba(16,185,129,0.15);
+      border-color: var(--accent-management);
+      color: var(--accent-management-glow);
+    }
+
+    .qcm-option.wrong {
+      background: rgba(239,68,68,0.15);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+
+    .qcm-option:disabled {
+      cursor: default;
+    }
+
+    .explanation {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .explanation::before {
+      content: '💡 ';
+    }
+
+    .score-box {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(16,185,129,0.05) 100%);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .score-box.warning {
+      background: linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(245,158,11,0.05) 100%);
+      border-color: rgba(245,158,11,0.3);
+    }
+
+    .score-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent-management);
+    }
+
+    .score-box.warning .score-value {
+      color: #f59e0b;
+    }
+
+    .score-text {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Situation styles */
+    .situation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .situation-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--accent-leadership-glow);
+    }
+
+    .situation-context {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border-left: 3px solid var(--accent-leadership);
+      font-style: italic;
+    }
+
+    .question-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .question-item {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--border-subtle);
+    }
+
+    .hint-btn {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .hint-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .hint-btn.active {
+      background: rgba(16,185,129,0.15);
+      border-color: var(--accent-management);
+      color: var(--accent-management-glow);
+    }
+
+    .hint-box {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .hint-title {
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--accent-management-glow);
+    }
+
+    .hint-item {
+      margin-bottom: 0.4rem;
+      padding-left: 0.5rem;
+    }
+
+    .hint-item::before {
+      content: '→ ';
+      color: var(--accent-management);
+    }
+
+    .info-box {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(99,102,241,0.08);
+      border-radius: 12px;
+      border-left: 3px solid var(--accent-leadership);
+    }
+
+    /* Progress bar */
+    .progress-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--bg-card);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-leadership) 0%, var(--accent-management) 100%);
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Keyboard hints */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 100;
+    }
+
+    .key {
+      padding: 0.4rem 0.8rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-title { font-size: 1.8rem; }
+      .unit-tabs { flex-direction: column; }
+      .main { padding: 1rem; }
+      .keyboard-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+  <div class="bg-grid"></div>
+
+  <header class="header">
+    <div class="header-badge">
+      <span></span>
+      Session active
+    </div>
+    <h1 class="header-title">Révision Examen</h1>
+    <p class="header-sub">Master ton sujet — 2025-2026</p>
+  </header>
+
+  <nav class="nav-container">
+    <div class="unit-tabs">
+      <button class="tab active" data-unit="leadership" onclick="setUnit('leadership')">
+        <span class="tab-icon">🤖</span>
+        <span class="tab-label">Leadership IA</span>
+        <span class="tab-sub">8 sections • 47 cartes</span>
+      </button>
+      <button class="tab" data-unit="management" onclick="setUnit('management')">
+        <span class="tab-icon">🏛️</span>
+        <span class="tab-label">Management</span>
+        <span class="tab-sub">École Classique</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="mode-tabs" id="modeTabs"></div>
+    <div class="progress-container" id="progressContainer"></div>
+    <div id="content"></div>
+  </main>
+
+  <div class="keyboard-hint">
+    <span class="key">←</span>
+    <span class="key">→</span>
+    <span class="key">Naviguer</span>
+  </div>
+
+  <script>
+    const UNITS = {
+      leadership: {
+        id: "leadership",
+        label: "Leadership Assisté par IA",
+        color: "#3B5BDB",
+        accent: "#748FFC",
+        icon: "🤖",
+        sections: [
+          {
+            title: "Définition & Positionnement",
+            cards: [
+              { q: "Qu'est-ce que le Leadership Assisté par IA ?", a: "C'est l'intersection entre l'Intelligence Artificielle et le Leadership d'équipe. L'IA n'est pas un substitut au leader, mais un catalyseur pour un leadership augmenté : elle renforce les capacités du leader, affine l'analyse des situations et éclaire la prise de décision." },
+              { q: "Quelle est la définition centrale du Leadership Assisté par IA ?", a: "\"L'IA n'est pas le pilote, mais le copilote qui décuple votre vision stratégique.\" L'IA enrichit la prise de décision par une analyse augmentée des données. Le leader reste la boussole : il conserve la vision d'ensemble, assume la responsabilité finale et demeure le garant de la cohésion humaine." },
+              { q: "Qu'est-ce que le leadership en général ?", a: "La capacité d'un individu à influencer, mobiliser et inspirer un groupe afin d'atteindre des objectifs communs. Il repose sur : la vision stratégique, la communication efficace, la prise de décision, la confiance mutuelle, et la dimension humaine et relationnelle." },
+              { q: "Quelle est la différence fondamentale entre Leadership et Management ?", a: "Management : Planifier, organiser, gérer les processus, orienté contrôle, court terme. Leadership : Inspirer, mobiliser, donner du sens, orienté vision, moyen/long terme. L'IA transforme surtout le management, mais repositionne profondément le leadership." },
+            ],
+          },
+          {
+            title: "Évolution Historique du Leadership",
+            cards: [
+              { q: "Quelles sont les 3 ères du leadership ?", a: "1. Leadership Traditionnel : hiérarchie forte, décisions centralisées, intuition dominante, faible usage des données. Limites : lenteur, subjectivité, difficulté d'anticipation. 2. Ère Numérique/Digitale : transformation digitale, outils numériques, modes de travail flexibles. 3. Leadership Assisté par IA : intégration croissante de l'IA pour augmenter la décision et la stratégie." },
+              { q: "Quelles sont les limites du Leadership Traditionnel ?", a: "Lenteur décisionnelle significative, subjectivité élevée dans les choix, difficulté d'anticipation des tendances." },
+              { q: "Quel est l'exemple Netflix dans l'évolution du leadership numérique ?", a: "Netflix est passé d'un service de location de DVD à une plateforme de streaming. Cela a exigé un leadership capable de : accepter le changement, expérimenter de nouvelles idées, prendre des décisions dans l'incertitude." },
+              { q: "Quel est l'exemple Amazon dans l'évolution du leadership numérique ?", a: "Amazon a évolué d'une librairie en ligne à un leader technologique diversifié (commerce électronique global, AWS, logistique intelligente, analyse de données). Ces transformations ont exigé un leadership gérant la complexité et l'innovation." },
+            ],
+          },
+          {
+            title: "Impact de l'IA sur le Management & Leadership",
+            cards: [
+              { q: "Comment l'IA impacte-t-elle le Management ?", a: "L'IA assiste et automatise les tâches opérationnelles : analyse de données et prévisions, optimisation de la logistique et production. Le manager utilise l'IA pour l'efficacité et les décisions tactiques." },
+              { q: "Comment l'IA impacte-t-elle le Leadership ?", a: "L'IA informe et enrichit, mais ne remplace pas les dimensions humaines : définir une vision et un sens, mobiliser et fédérer les équipes, gérer les relations humaines et la confiance. Le leader intègre l'IA dans sa vision et ses choix." },
+              { q: "Quelles sont les 4 dimensions du Leadership Augmenté par l'IA ?", a: "1. Décisions Assistées : appui sur les données pour des choix éclairés et objectifs. 2. Capacité d'Anticipation : prédiction des tendances et scénarios futurs. 3. Recommandations Intelligentes : suggestions basées sur l'analyse approfondie. 4. Interaction Homme-Machine : collaboration fluide entre leader et technologie." },
+              { q: "Comment l'IA renforce-t-elle la Vision Stratégique du leader ?", a: "Analyse des tendances (identification des évolutions du marché et de l'environnement concurrentiel), Scénarios Prospectifs (construction de futurs possibles basés sur les données), Aide à l'Anticipation (détection précoce des opportunités et menaces stratégiques)." },
+              { q: "Comment l'IA renforce-t-elle la Prise de Décision ?", a: "Réduction de l'incertitude (diminution des zones d'ombre grâce à l'analyse de données complètes et objectives), Appui Factuel (faits et analyses pour étayer les décisions), Comparaison d'Alternatives (évaluation objective de multiples options avec avantages et inconvénients)." },
+              { q: "Comment l'IA renforce-t-elle la Communication du leader ?", a: "Via des assistants managériaux intelligents, des outils de feedback automatisés, et la personnalisation des messages selon les profils. L'IA permet une communication plus ciblée, plus efficace et mieux adaptée à chaque interlocuteur." },
+            ],
+          },
+          {
+            title: "Ce que l'IA N'est PAS",
+            cards: [
+              { q: "Ce que l'IA N'est PAS (4 mythes à déconstruire)", a: "1. Pas une Pensée Humaine : l'IA ne pense pas comme un humain. 2. Pas de Valeurs et Responsabilité : l'IA n'a ni valeurs ni responsabilité morale. 3. Pas un Remplacement du Leader : l'IA ne remplace pas le leader. 4. Pas une Décision Autonome : l'IA ne décide pas seule dans un cadre responsable. L'IA est un outil, pas un acteur moral." },
+              { q: "Définition simplifiée de l'IA pour un manager", a: "L'intelligence artificielle désigne l'ensemble des technologies capables d'analyser des données, d'apprendre de l'expérience et de proposer des recommandations ou actions automatisées. Pour un manager, elle sert à : Analyser rapidement (grands volumes de données), Détecter des tendances (patterns invisibles à l'œil humain), Proposer des scénarios (alternatives décisionnelles)." },
+              { q: "Qu'est-ce que l'IA : outil ou acteur ?", a: "L'IA est un instrument puissant mis au service des objectifs humains, sans autonomie morale. Le contrôle, la direction et la responsabilité restent fermement entre les mains humaines." },
+            ],
+          },
+          {
+            title: "Risques & Limites de l'IA",
+            cards: [
+              { q: "Quels sont les 4 risques majeurs de l'IA en leadership ?", a: "1. Dépendance Excessive : risque de s'appuyer trop fortement sur les outils au détriment du jugement humain. 2. Biais Algorithmiques : les algorithmes peuvent reproduire et amplifier des préjugés existants. 3. Déshumanisation : perte de la dimension relationnelle et empathique du management. 4. Perte de Sens : dilution de la responsabilité et de la vision stratégique humaine." },
+              { q: "Comment les Biais Algorithmiques se forment-ils et quelles sont leurs conséquences ?", a: "Ils découlent de données teintées de préjugés ou d'échantillons non représentatifs encodés dans les modèles d'apprentissage. Conséquences : risque de prendre des décisions discriminatoires, perte de confiance, risques juridiques et réputationnels. Solution : vigilance constante, diversification des données, audits réguliers." },
+              { q: "Qu'est-ce que le danger de la Dépendance à l'IA ?", a: "Un leader sans esprit critique face à l'IA devient un simple exécutant. La dépendance excessive transforme le leader en suiveur de recommandations automatiques. Le questionnement et la validation humaine restent indispensables à chaque étape." },
+              { q: "Qu'est-ce que le Risque de Déshumanisation ?", a: "Le management ne peut se réduire à des algorithmes et des métriques. La dimension humaine, l'empathie et la capacité à créer du lien restent au cœur du leadership efficace. Ce qui se perd : empathie authentique, écoute active, connexion humaine, intuition relationnelle." },
+              { q: "Qu'est-ce que la Perte de Sens et la Dilution du Leadership ?", a: "3 risques : Responsabilité Diffuse (délégation excessive à l'IA estompe les limites de l'imputabilité), Érosion de la Vision Stratégique (l'IA optimise les processus mais définir une direction future reste humain), Quête de Sens (le leadership humain dépasse la simple efficience pour insuffler un but, des valeurs, une culture)." },
+            ],
+          },
+          {
+            title: "Posture du Leader à l'Ère de l'IA",
+            cards: [
+              { q: "Quels sont les 3 profils de leaders face à l'IA ?", a: "1. Le Leader Résistant : refuse l'IA et reste attaché aux méthodes traditionnelles, risque de ralentir ses décisions. 2. Le Leader Dépendant : suit l'IA sans recul et peut perdre son jugement critique. 3. Le Leader Équilibré (ideal) : utilise l'IA comme appui tout en gardant son jugement humain." },
+              { q: "Quels sont les 4 Piliers de la Posture du leader augmenté ?", a: "1. Esprit Critique : questionner systématiquement les recommandations de l'IA et leurs fondements. 2. Capacité d'Interprétation : donner du sens aux données et aux analyses produites par les algorithmes. 3. Sens Éthique : maintenir une boussole morale dans l'utilisation des technologies. 4. Responsabilité Humaine : assumer pleinement les décisions prises avec l'appui de l'IA." },
+              { q: "Quel est le rôle du Leader comme Arbitre Éclairé ?", a: "Le leader devient un arbitre éclairé entre données (analytique et IA pour insights), valeurs (éthique et principes humains) et vision (direction stratégique et but). Il n'est pas subordonné aux données, il les arbitre. La responsabilité reste humaine, toujours et entièrement." },
+              { q: "Comment un leader doit-il appliquer l'Esprit Critique face à l'IA ?", a: "1. Questionner les Sources : D'où viennent les données ? Sont-elles fiables et représentatives ? 2. Analyser les Limites : Quelles sont les hypothèses sous-jacentes ? Quels biais potentiels ? 3. Valider la Pertinence : Les recommandations sont-elles adaptées au contexte spécifique ?" },
+              { q: "Comment le leader applique-t-il sa Capacité d'Interprétation ?", a: "L'IA produit des données et des corrélations. Le leader doit : contextualiser les résultats, identifier les implications stratégiques, traduire les insights en actions concrètes, communiquer le sens aux équipes." },
+              { q: "Quel est le principe éthique indispensable du leader face à l'IA ?", a: "Questions Éthiques Permanentes : Cette décision respecte-t-elle nos valeurs ? Quel impact sur les personnes ? Les processus sont-ils équitables et transparents ? Garde-fou Humain : Le leader doit être le gardien des principes éthiques, refusant les recommandations qui les violeraient, même si elles sont optimales sur le plan technique." },
+            ],
+          },
+          {
+            title: "Compétences & Impact Organisationnel",
+            cards: [
+              { q: "Quelles sont les Compétences Traditionnelles Renforcées du leader augmenté ?", a: "1. Intelligence Émotionnelle : plus que jamais essentielle pour maintenir l'humanité du leadership. 2. Communication : capacité à traduire les insights techniques en messages inspirants. 3. Vision Stratégique : donner du sens et une direction au-delà des données." },
+              { q: "Quelles sont les Nouvelles Compétences Requises du leader augmenté ?", a: "1. Littératie des Données : comprendre et interpréter les analyses produites par l'IA. 2. Pensée Critique Augmentée : questionner les algorithmes et leurs recommandations. 3. Éthique Technologique : naviguer les dilemmes moraux liés à l'usage de l'IA. 4. Agilité d'Apprentissage : s'adapter continuellement aux évolutions technologiques." },
+              { q: "Comment l'IA impacte-t-elle l'Organisation dans son ensemble ?", a: "Transformation des modes de travail (décisions plus basées sur les données, automatisation de certaines tâches, collaboration avec des outils intelligents), Évolution des rôles et responsabilités (nouveaux métiers liés à l'IA, redéfinition des missions), Changement dans la prise de décision (plus rapide, plus informée, mais nécessitant plus de recul critique)." },
+              { q: "Quelle Culture Organisationnelle est nécessaire à l'ère de l'IA ?", a: "Transparence (clarté sur l'usage de l'IA et ses limites), Apprentissage (culture de formation continue aux outils et à l'esprit critique), Confiance (maintien de la confiance malgré l'introduction de technologies), Responsabilité (clarification des responsabilités humaines)." },
+            ],
+          },
+          {
+            title: "Applications Concrètes & Synthèse",
+            cards: [
+              { q: "Exemple : Comment le leader arbitre-t-il face à une recommandation IA en e-commerce ?", a: "IA recommande : concentration sur les produits à bas prix et fort volume pour maximiser les ventes. Le leader interroge : Quelle est notre vision (haut de gamme vs low-cost) et quelles sont nos valeurs (image de marque) ? Décision du leader : choix d'une stratégie équilibrée, privilégiant parfois la qualité ou la vision à long terme. L'IA propose, le leader décide en tenant compte de la vision et des valeurs." },
+              { q: "Exemple : Comment le leader arbitre-t-il en Recrutement ?", a: "IA recommande : profils « sûrs » basés sur des schémas de recrutement passés, favorisant l'homogénéité. Le leader interroge : le besoin de diversité, d'innovation, le risque de passer à côté de talents atypiques. Décision : arbitrage pour intégrer des profils variés, équilibrer la sécurité des données et la nécessité d'innovation." },
+              { q: "Exemple : Comment le leader arbitre-t-il en Finance (réduction des coûts) ?", a: "IA recommande : réduire les dépenses, automatiser des fonctions et diminuer les effectifs pour optimiser les coûts. Le leader interroge : quel impact sur la motivation des équipes, la qualité du travail et la capacité d'innovation à long terme ? Décision : réductions progressives, accompagner les équipes et investir dans la formation plutôt que de simplement couper les postes." },
+              { q: "Quels sont les 5 messages clés à retenir absolument ?", a: "1. Évolution Structurelle : le leadership assisté par IA n'est pas une mode, mais une évolution structurelle du management. 2. Renforcement, Pas Remplacement : l'IA renforce le leadership, elle ne le remplace pas. 3. Responsabilité Humaine : la responsabilité reste humaine, toujours et entièrement. 4. Valeur du Leader : réside dans le sens, l'éthique et la vision. 5. Posture Critique : l'esprit critique est la compétence la plus importante à l'ère de l'IA." },
+              { q: "L'IA rend-elle le leader plus fort ou plus dépendant ? (synthèse du débat)", a: "La réponse n'est pas binaire. L'IA peut rendre le leader plus fort SI et SEULEMENT SI celui-ci maintient son esprit critique, développe ses compétences et conserve sa responsabilité pleine et entière. Le risque de dépendance est réel mais peut être maîtrisé par une posture consciente et une formation appropriée. L'enjeu est de créer une véritable augmentation, pas une substitution." },
+            ],
+          },
+        ],
+        situations: [
+          {
+            title: "Situation 1 : Le DRH et l'IA de recrutement",
+            context: "Sarah, DRH d'une PME technologique, utilise depuis 6 mois un logiciel IA pour présélectionner les CVs. L'outil lui recommande systématiquement des profils d'ingénieurs hommes entre 25-35 ans issus de grandes écoles. Elle remarque que ses nouvelles recrues sont de plus en plus homogènes, et que ses équipes commencent à manquer de créativité.",
+            questions: ["Identifiez le(s) risque(s) de l'IA en jeu dans cette situation.", "Comment Sarah devrait-elle exercer son rôle de leader équilibré face à l'IA ?", "Quelles questions éthiques Sarah doit-elle se poser ?", "Quelle décision finale prendriez-vous à sa place, en mobilisant les 4 piliers de la posture du leader ?"],
+            hints: ["Biais algorithmiques (données d'entraînement historiques → préjugés reproduits)", "Déshumanisation (réduire le recrutement à des métriques)", "Dépendance excessive (elle suit sans esprit critique)", "Esprit critique : D'où viennent ces données ? Sont-elles représentatives ? Valider la pertinence", "Responsabilité humaine : elle doit assumer la décision finale", "Éthique : Les processus sont-ils équitables ? Quel impact sur les personnes exclues ?"],
+          },
+          {
+            title: "Situation 2 : Le manager et les tableaux de bord IA",
+            context: "Marc, directeur commercial, reçoit chaque matin un rapport IA qui analyse les performances de ses 15 commerciaux et lui recommande qui former, qui promouvoir, qui « surveiller ». Il a pris l'habitude de suivre les recommandations sans trop les questionner, gagnant du temps mais perdant le contact avec son équipe. Un commercial performant selon les données humaines vient d'être signalé comme « risque de démission » par l'IA.",
+            questions: ["Quel profil de leader est Marc ? Justifiez.", "Quels risques l'organisation court-elle dans cette situation ?", "Comment Marc devrait-il réintégrer sa capacité d'interprétation ?", "Proposez une posture équilibrée pour utiliser cet outil correctement."],
+            hints: ["Marc = Leader Dépendant (suit l'IA sans recul, perd son jugement critique)", "Risques : déshumanisation, dépendance, perte du sens, biais d'interprétation", "Capacité d'interprétation : contextualiser les résultats, identifier les implications réelles, communicer avec l'équipe", "Posture équilibrée : utiliser l'IA comme déclencheur de conversation, pas comme verdict final"],
+          },
+          {
+            title: "Situation 3 : Le PDG face à une décision stratégique",
+            context: "Un PDG doit décider d'ouvrir ou non une nouvelle filiale au Maroc. L'IA analyse les données de marché, la concurrence, les coûts et recommande fortement de ne PAS ouvrir la filiale (ROI négatif sur 3 ans selon le modèle). Cependant, le PDG connaît le marché local, a des contacts sur place, et sent que le moment est stratégiquement important pour leur positionnement.",
+            questions: ["Le PDG doit-il suivre la recommandation de l'IA ? Justifiez votre raisonnement.", "Comment articuler les données IA et l'intuition du leader dans ce cas ?", "Quels éléments le PDG doit-il questionner dans la recommandation IA ?", "Quelle est la posture du leader comme arbitre éclairé ici ?"],
+            hints: ["Non automatiquement : le leader n'est pas subordonné aux données, il les arbitre", "L'IA analyse le passé et les données quantifiables ; le PDG intègre des dimensions qualitatives non capturées", "Questions : Quelles données utilisées ? Horizon temporel ? Facteurs non quantifiables pris en compte ?", "Arbitre éclairé : intégrer données (IA) + valeurs (stratégie long terme) + vision (positionnement futur)"],
+          },
+        ],
+      },
+      management: {
+        id: "management",
+        label: "Management des Organisations",
+        color: "#2F9E44",
+        accent: "#69DB7C",
+        icon: "🏛️",
+        subtitle: "École Classique",
+        sections: [
+          {
+            title: "Introduction au Management",
+            cards: [
+              { q: "Qu'est-ce que le management ?", a: "Le management est l'ensemble des techniques d'organisation et de gestion des ressources (humaines, financières, matérielles) pour atteindre les objectifs d'une organisation. Il englobe la planification, l'organisation, la direction et le contrôle." },
+              { q: "Quelles sont les 4 fonctions classiques du management (Fayol) ?", a: "1. Planifier : définir les objectifs et les moyens pour les atteindre. 2. Organiser : structurer les ressources et les tâches. 3. Diriger (Commander) : guider et motiver les équipes. 4. Contrôler : vérifier que les résultats correspondent aux objectifs." },
+              { q: "Qu'est-ce qu'une organisation ?", a: "Un système social coordonné, orienté vers la réalisation d'objectifs communs, disposant d'une structure formelle, de ressources et d'une frontière (membres vs non-membres). Elle peut être une entreprise, une administration, une association, etc." },
+            ],
+          },
+          {
+            title: "Frederick Winslow Taylor — L'OST",
+            cards: [
+              { q: "Qui est Frederick Taylor et quelle est sa période ?", a: "Ingénieur américain (1856-1915), fondateur de l'Organisation Scientifique du Travail (OST). Il publie 'The Principles of Scientific Management' en 1911. Il est considéré comme le père du management scientifique." },
+              { q: "Quels sont les 4 principes fondamentaux de Taylor (OST) ?", a: "1. Division horizontale du travail : décomposition des tâches en gestes élémentaires simples et répétitifs (one best way). 2. Division verticale du travail : séparation entre ceux qui pensent (ingénieurs/management) et ceux qui exécutent (ouvriers). 3. Salaire au rendement (stimulant matériel) : la rémunération est liée à la productivité. 4. Contrôle strict du travail : surveillance permanente de l'exécution des tâches." },
+              { q: "Qu'est-ce que le 'One Best Way' de Taylor ?", a: "Il existe une seule et unique meilleure façon d'accomplir une tâche (geste, outil, temps). Taylor utilise des études de temps et de mouvement (chronomètres) pour identifier la méthode optimale et l'imposer à tous les ouvriers." },
+              { q: "Qu'est-ce que la division horizontale du travail chez Taylor ?", a: "La décomposition des tâches complexes en gestes élémentaires, simples et répétitifs. Chaque ouvrier ne fait qu'une seule opération (spécialisation extrême). Exemple : la chaîne de montage Ford." },
+              { q: "Qu'est-ce que la division verticale du travail chez Taylor ?", a: "Séparation stricte entre : la conception (ingénieurs, management : ils pensent, planifient, organisent) et l'exécution (ouvriers : ils appliquent les instructions sans réfléchir). Cette séparation vise l'efficacité mais crée une hiérarchie rigide." },
+              { q: "Quels sont les apports et les limites du Taylorisme ?", a: "Apports : forte augmentation de la productivité, réduction des coûts, standardisation, base du travail à la chaîne industrielle. Limites : déshumanisation du travail, absentéisme élevé, turn-over, perte de sens, conflits sociaux, démotivation (l'homme est réduit à une machine), incompatibilité avec les tâches créatives et complexes." },
+              { q: "Qu'est-ce que le Fordisme (lien avec Taylor) ?", a: "Henry Ford applique les principes tayloriens à l'industrie automobile : travail à la chaîne, standardisation des produits (Ford T), mais ajoute une dimension : le salaire élevé ('Five Dollar Day') pour que les ouvriers puissent acheter les voitures qu'ils produisent (cercle vertueux production-consommation). Le fordisme = taylorisme + production de masse + consommation de masse." },
+            ],
+          },
+          {
+            title: "Henri Fayol — L'Administration Industrielle",
+            cards: [
+              { q: "Qui est Henri Fayol et quelle est sa période ?", a: "Ingénieur et dirigeant français (1841-1925). Il publie 'Administration Industrielle et Générale' en 1916. Contrairement à Taylor (vision de l'atelier), Fayol adopte une vision top-down (la direction générale). Il est le père de la théorie administrative." },
+              { q: "Quelles sont les 6 fonctions de l'entreprise selon Fayol ?", a: "1. Fonction Technique : production, fabrication. 2. Fonction Commerciale : achat, vente. 3. Fonction Financière : gestion des capitaux. 4. Fonction de Sécurité : protection des biens et des personnes. 5. Fonction de Comptabilité : inventaire, bilan, statistiques. 6. Fonction Administrative : la plus importante — POCCC." },
+              { q: "Qu'est-ce que la Fonction Administrative (POCCC) de Fayol ?", a: "Prévoir (planification), Organiser (structure), Commander (direction), Coordonner (cohérence entre les actions), Contrôler (vérification). C'est la fonction primordiale car elle chapeaute toutes les autres et est le domaine exclusif du management." },
+              { q: "Quels sont les 14 principes d'administration de Fayol ?", a: "1. Division du travail, 2. Autorité et responsabilité, 3. Discipline, 4. Unité de commandement (un seul supérieur), 5. Unité de direction (un seul plan pour un ensemble d'opérations), 6. Subordination de l'intérêt particulier à l'intérêt général, 7. Rémunération du personnel, 8. Centralisation, 9. Hiérarchie (voie hiérarchique), 10. Ordre (matériel et social), 11. Équité, 12. Stabilité du personnel, 13. Initiative, 14. Union du personnel (esprit de corps)." },
+              { q: "Qu'est-ce que le principe d'Unité de Commandement de Fayol ?", a: "Un employé ne doit recevoir des ordres que d'un seul supérieur hiérarchique. Cela évite les conflits d'autorité, la confusion et améliore la responsabilisation. C'est un principe fondamental pour maintenir l'ordre organisationnel." },
+              { q: "Qu'est-ce que le principe d'Unité de Direction de Fayol ?", a: "Un seul chef et un seul programme pour un ensemble d'opérations visant le même but. Différent de l'unité de commandement (qui concerne les individus). L'unité de direction concerne la cohérence des objectifs au niveau des services." },
+              { q: "Quelle est la différence entre Taylor et Fayol ?", a: "Taylor : vision bottom-up (atelier, ouvriers), accent sur l'efficacité de l'exécution, one best way, ingénieur. Fayol : vision top-down (direction générale), accent sur les fonctions d'administration, 14 principes, dirigeant. Tous deux font partie de l'École Classique mais avec des angles différents." },
+            ],
+          },
+          {
+            title: "Max Weber — La Bureaucratie",
+            cards: [
+              { q: "Qui est Max Weber et quelle est sa contribution ?", a: "Sociologue et économiste allemand (1864-1920). Il développe la théorie de la Bureaucratie comme forme idéale d'organisation rationnelle. Il analyse les formes d'autorité dans son œuvre 'Économie et Société' (1922, posthume)." },
+              { q: "Quels sont les 3 types d'autorité selon Weber ?", a: "1. Autorité Traditionnelle : basée sur les coutumes, les traditions, l'héritage (ex : monarchies, familles). 2. Autorité Charismatique : basée sur la personnalité exceptionnelle, le charisme, la séduction d'un individu (ex : leaders politiques, prophètes). 3. Autorité Rationnelle-Légale : basée sur des règles impersonnelles, des lois, des procédures formelles. C'est la base de la bureaucratie." },
+              { q: "Qu'est-ce que l'Autorité Rationnelle-Légale (Weber) ?", a: "L'autorité est légitime car elle est fondée sur des règles formelles, impersonnelles et rationnelles (lois, règlements, procédures). On obéit non à une personne mais à une règle. C'est la forme d'autorité la plus stable et la plus efficace selon Weber. C'est la base des États modernes et des grandes entreprises." },
+              { q: "Quelles sont les caractéristiques de la Bureaucratie idéale selon Weber ?", a: "1. Division du travail claire et précise. 2. Hiérarchie d'autorité formellement définie. 3. Système de règles et de procédures formelles écrites. 4. Impersonnalité des relations (les règles s'appliquent sans favoritisme). 5. Sélection et promotion basées sur les compétences (mérite, diplômes). 6. Séparation entre la vie professionnelle et privée des fonctionnaires." },
+              { q: "Quels sont les apports et les critiques de la Bureaucratie de Weber ?", a: "Apports : rationalité, efficacité, équité (impersonnalité), prévisibilité, stabilité, réduction de l'arbitraire. Critiques : rigidité et lourdeur, lenteur dans la prise de décision, manque de flexibilité face aux changements, déshumanisation, tendance à la fin de la bureaucratie (les règles deviennent une fin en soi), résistance à l'innovation." },
+              { q: "Quelle est la différence entre Taylor, Fayol et Weber dans l'École Classique ?", a: "Taylor : efficacité opérationnelle (atelier) → OST, one best way, salaire au rendement. Fayol : efficacité administrative (direction) → POCCC, 14 principes, fonctions de l'entreprise. Weber : légitimité de l'autorité (sociologie) → 3 types d'autorité, bureaucratie rationnelle-légale. Les trois partagent : rationalité, hiérarchie formelle, spécialisation, vision mécaniste de l'organisation." },
+            ],
+          },
+          {
+            title: "Points Communs & Critiques de l'École Classique",
+            cards: [
+              { q: "Quels sont les points communs de l'École Classique (Taylor, Fayol, Weber) ?", a: "1. Rationalité : l'organisation doit fonctionner de manière rationnelle et logique. 2. Hiérarchie formelle : structure claire et chaîne de commandement précise. 3. Spécialisation du travail : division du travail pour améliorer l'efficacité. 4. Vision mécaniste : l'organisation est vue comme une machine bien huilée. 5. Recherche de l'efficacité maximale. 6. Importance des règles et des procédures formelles." },
+              { q: "Quelles sont les critiques générales de l'École Classique ?", a: "1. Vision trop mécaniste de l'homme (l'homme = facteur de production, machine économique rationnelle). 2. Négligence des facteurs humains et psychologiques (motivation, relations sociales, bien-être). 3. Rigidité face aux changements de l'environnement. 4. Conflits sociaux importants générés par ces méthodes. 5. Pas de prise en compte de l'environnement externe de l'entreprise. Ces critiques ont mené à l'émergence de l'École des Relations Humaines (Mayo)." },
+              { q: "Qu'est-ce que l'hypothèse de l'Homme Économique Rationnel dans l'École Classique ?", a: "L'École Classique suppose que l'homme est principalement motivé par l'argent (stimulus économique) et agit toujours de manière rationnelle pour maximiser son intérêt matériel. Cette hypothèse est réductrice : elle ignore les besoins sociaux, psychologiques, d'appartenance et d'accomplissement (critiqués ensuite par Mayo, Maslow, Herzberg)." },
+              { q: "Quelles sont les conditions historiques d'émergence de l'École Classique ?", a: "Révolution industrielle (fin XIXe - début XXe siècle) : développement de grandes usines, production de masse, besoin d'organiser de grandes quantités de travailleurs peu qualifiés. Contexte de croissance économique forte, stabilité relative de l'environnement, et forte concurrence sur les coûts. Ces conditions ont rendu pertinentes les approches rationnelles et standardisées." },
+              { q: "En quoi le Taylorisme est-il encore présent aujourd'hui ?", a: "On retrouve le taylorisme dans : les chaînes logistiques (entrepôts Amazon, fast-food), les call centers (scripts de conversation), certaines lignes de production automatisées. Cependant, son application stricte est limitée car les entreprises modernes ont besoin de flexibilité, créativité et engagement des employés que le taylorisme détruit." },
+            ],
+          },
+        ],
+        qcm: [
+          { q: "Qui est l'auteur de l'Organisation Scientifique du Travail (OST) ?", options: ["Henri Fayol", "Max Weber", "Frederick Taylor", "Elton Mayo"], answer: 2, explanation: "Frederick Taylor (1856-1915) est le fondateur de l'OST, publiée dans 'The Principles of Scientific Management' (1911)." },
+          { q: "Quelle est la signification de POCCC dans la théorie de Fayol ?", options: ["Produire, Organiser, Contrôler, Commander, Coordonner", "Prévoir, Organiser, Commander, Coordonner, Contrôler", "Planifier, Optimiser, Créer, Communiquer, Contrôler", "Prévoir, Organiser, Créer, Coordonner, Contrôler"], answer: 1, explanation: "POCCC = Prévoir, Organiser, Commander, Coordonner, Contrôler. C'est la Fonction Administrative, la plus importante selon Fayol." },
+          { q: "Selon Weber, sur quoi est fondée l'autorité Rationnelle-Légale ?", options: ["Le charisme et la personnalité du leader", "Les traditions et les coutumes", "Des règles formelles et impersonnelles", "L'expérience et l'ancienneté"], answer: 2, explanation: "L'autorité rationnelle-légale est basée sur des règles formelles, impersonnelles et rationnelles (lois, règlements). On obéit à la règle, pas à la personne." },
+          { q: "Combien de principes d'administration Fayol a-t-il définis ?", options: ["10", "12", "14", "16"], answer: 2, explanation: "Fayol a défini 14 principes d'administration, dont l'unité de commandement, l'unité de direction, la division du travail, etc." },
+          { q: "Qu'est-ce que le 'One Best Way' de Taylor ?", options: ["Un système de rémunération unique pour tous les ouvriers", "La meilleure et unique façon d'accomplir une tâche, identifiée scientifiquement", "Un modèle de management applicable à toutes les organisations", "Une technique de négociation avec les syndicats"], answer: 1, explanation: "Le 'One Best Way' désigne la méthode unique et optimale pour réaliser une tâche, identifiée par des études de temps et de mouvements (chronomètre)." },
+          { q: "Quel auteur de l'École Classique adopte une vision TOP-DOWN (depuis la direction générale) ?", options: ["Taylor", "Weber", "Fayol", "Ford"], answer: 2, explanation: "Fayol adopte une vision top-down (depuis la direction générale), contrairement à Taylor qui part de l'atelier (bottom-up)." },
+          { q: "La division verticale du travail selon Taylor consiste à séparer :", options: ["Les tâches physiques des tâches intellectuelles", "Les ouvriers qualifiés des ouvriers non-qualifiés", "Ceux qui conçoivent et ceux qui exécutent", "Les services de production et les services administratifs"], answer: 2, explanation: "La division verticale = séparation entre la conception (ingénieurs/management qui pensent) et l'exécution (ouvriers qui appliquent sans réfléchir)." },
+          { q: "Quels sont les 3 types d'autorité selon Weber ?", options: ["Technique, Administrative, Sociale", "Traditionnelle, Charismatique, Rationnelle-Légale", "Formelle, Informelle, Hybride", "Directe, Déléguée, Partagée"], answer: 1, explanation: "Weber identifie 3 types d'autorité : Traditionnelle (coutumes), Charismatique (personnalité), Rationnelle-Légale (règles formelles)." },
+          { q: "Selon le principe d'Unité de Commandement de Fayol, un employé doit :", options: ["Suivre les ordres du supérieur le plus compétent", "Ne recevoir des ordres que d'un seul supérieur hiérarchique", "Obéir à tous les managers de son département", "Avoir deux supérieurs pour une meilleure coordination"], answer: 1, explanation: "L'unité de commandement = un employé ne reçoit des ordres que d'un seul supérieur. Cela évite les conflits d'autorité et améliore la responsabilisation." },
+          { q: "Quelle est la principale critique de l'École Classique ?", options: ["Elle néglige la dimension financière de l'entreprise", "Elle propose trop peu de règles et de procédures", "Elle a une vision trop mécaniste de l'homme et néglige les facteurs humains", "Elle est incompatible avec la production industrielle"], answer: 2, explanation: "La critique principale est la vision mécaniste et économique de l'homme (réduit à un facteur de production), ignorant les besoins sociaux, psychologiques et relationnels." },
+          { q: "Parmi les 6 fonctions de Fayol, laquelle est considérée comme la plus importante ?", options: ["La fonction commerciale", "La fonction technique", "La fonction financière", "La fonction administrative"], answer: 3, explanation: "La fonction administrative (POCCC) est la plus importante selon Fayol car elle chapeaute toutes les autres et est le domaine exclusif du management." },
+          { q: "Le Fordisme ajoute quoi par rapport au Taylorisme ?", options: ["La spécialisation des ouvriers", "La surveillance par des contremaîtres", "Des salaires élevés pour permettre aux ouvriers de consommer ce qu'ils produisent", "La séparation entre conception et exécution"], answer: 2, explanation: "Ford ajoute le 'Five Dollar Day' (salaire élevé) permettant aux ouvriers d'acheter les voitures produites → cercle vertueux production-consommation de masse." },
+        ],
+      },
+    };
+
+    let currentUnit = "leadership";
+    let currentMode = "flash";
+    let flippedCards = {};
+    let qcmAnswers = {};
+    let qcmScore = null;
+    let situationHints = {};
+
+    function setUnit(unit) {
+      currentUnit = unit;
+      currentMode = unit === "leadership" ? "flash" : "flash";
+      flippedCards = {};
+      qcmAnswers = {};
+      qcmScore = null;
+      situationHints = {};
+      render();
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      render();
+    }
+
+    function toggleCard(sectionIndex, cardIndex) {
+      const key = `${sectionIndex}-${cardIndex}`;
+      flippedCards[key] = !flippedCards[key];
+      render();
+    }
+
+    function chooseQCM(qIndex, oIndex) {
+      if (qcmAnswers[qIndex] !== undefined) return;
+      qcmAnswers[qIndex] = oIndex;
+      if (Object.keys(qcmAnswers).length === UNITS.management.qcm.length) {
+        let s = 0;
+        UNITS.management.qcm.forEach((q, i) => { if (qcmAnswers[i] === q.answer) s++; });
+        qcmScore = s;
+      }
+      render();
+    }
+
+    function toggleHint(sIndex) {
+      situationHints[sIndex] = !situationHints[sIndex];
+      render();
+    }
+
+    function render() {
+      const unit = UNITS[currentUnit];
+
+      // Update tabs
+      document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.unit === currentUnit);
+      });
+
+      // Render mode tabs
+      const modes = currentUnit === "leadership"
+        ? [{ id: "flash", label: "📚 Fiches" }, { id: "situations", label: "🎯 Cas pratiques" }]
+        : [{ id: "flash", label: "📚 Fiches" }, { id: "qcm", label: "✅ QCM" }];
+
+      let modeTabsHtml = modes.map(m => 
+        `<button class="mode-btn ${currentMode === m.id ? 'active' : ''}" data-mode="${m.id}" onclick="setMode('${m.id}')">${m.label}</button>`
+      ).join("");
+      document.getElementById("modeTabs").innerHTML = modeTabsHtml;
+
+      // Render progress
+      const totalCards = unit.sections.reduce((acc, s) => acc + s.cards.length, 0);
+      const flippedCount = Object.keys(flippedCards).filter(k => flippedCards[k]).length;
+      const progress = totalCards > 0 ? (flippedCount / totalCards) * 100 : 0;
+      
+      let progressHtml = `
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${progress}%"></div>
+        </div>
+        <div class="progress-text">
+          <span>${flippedCount} / ${totalCards} fiches consultées</span>
+          <span>${Math.round(progress)}%</span>
+        </div>
+      `;
+      document.getElementById("progressContainer").innerHTML = progressHtml;
+
+      // Render content
+      let content = "";
+
+      if (currentMode === "flash") {
+        const totalCards = unit.sections.reduce((acc, s) => acc + s.cards.length, 0);
+        content = `
+          <div class="stats-bar">
+            <span>📝 ${totalCards} fiches au total</span>
+            <span>🗂️ ${unit.sections.length} chapitres</span>
+            <span style="color: ${unit.accent}">Cliquez sur une fiche pour révéler la réponse</span>
+          </div>
+        `;
+        unit.sections.forEach((section, si) => {
+          content += `
+            <div class="section">
+              <div class="section-header">
+                <div class="section-title">${section.title}</div>
+              </div>
+          `;
+          section.cards.forEach((card, ci) => {
+            const key = `${si}-${ci}`;
+            const isFlipped = flippedCards[key];
+            content += `
+              <div class="card ${isFlipped ? 'flipped' : ''}" onclick="toggleCard(${si}, ${ci})">
+                <div class="card-q">
+                  <span>${card.q}</span>
+                  <span class="badge">${isFlipped ? 'Réponse' : 'Cliquer'}</span>
+                </div>
+                ${isFlipped ? `<div class="card-a">${card.a}</div>` : ''}
+              </div>
+            `;
+          });
+          content += `</div>`;
+        });
+      } else if (currentMode === "qcm" && unit.qcm) {
+        const total = unit.qcm.length;
+        if (qcmScore !== null) {
+          const passed = qcmScore >= total * 0.7;
+          content += `
+            <div class="score-box ${passed ? '' : 'warning'}">
+              <div class="score-value">${qcmScore}/${total}</div>
+              <div class="score-text">${passed ? 'Excellent ! Bien préparé 🎉' : 'Revoyez les fiches et réessayez 💪'}</div>
+            </div>
+          `;
+        }
+        unit.qcm.forEach((item, qi) => {
+          const chosen = qcmAnswers[qi];
+          content += `<div class="qcm-card"><div class="qcm-q">Q${qi + 1}. ${item.q}</div>`;
+          item.options.forEach((opt, oi) => {
+            let state = "";
+            if (chosen !== undefined) {
+              if (oi === item.answer) state = "correct";
+              else if (oi === chosen) state = "wrong";
+            }
+            content += `
+              <button class="qcm-option ${state}" ${chosen !== undefined ? 'disabled' : ''} onclick="chooseQCM(${qi}, ${oi})">
+                ${String.fromCharCode(65 + oi)}. ${opt}
+              </button>
+            `;
+          });
+          if (chosen !== undefined) {
+            content += `<div class="explanation">${item.explanation}</div>`;
+          }
+          content += "</div>";
+        });
+        if (qcmScore === null && Object.keys(qcmAnswers).length > 0) {
+          content += `<div class="stats-bar" style="justify-content: center;">${Object.keys(qcmAnswers).length}/${total} questions répondues</div>`;
+        }
+      } else if (currentMode === "situations" && unit.situations) {
+        content += `
+          <div class="info-box">ℹ️ Entraîne-toi comme pour l'examen : lis la situation, réponds aux questions mentalement, puis consulte les pistes de réponse.</div>
+        `;
+        unit.situations.forEach((sit, si) => {
+          content += `
+            <div class="situation-card">
+              <div class="situation-title">${sit.title}</div>
+              <div class="situation-context">${sit.context}</div>
+              <div class="question-label">Questions à traiter :</div>
+              ${sit.questions.map((q, qi) => `<div class="question-item">${qi + 1}. ${q}</div>`).join("")}
+              <div style="margin-top: 1rem;">
+                <button class="hint-btn ${situationHints[si] ? 'active' : ''}" onclick="toggleHint(${si})">
+                  ${situationHints[si] ? "Masquer les pistes" : "💡 Voir les pistes de réponse"}
+                </button>
+                ${situationHints[si] ? `
+                  <div class="hint-box">
+                    <div class="hint-title">Pistes de réponse :</div>
+                    ${sit.hints.map(h => `<div class="hint-item">${h}</div>`).join("")}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      document.getElementById("content").innerHTML = content;
+    }
+
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        setUnit(currentUnit === "leadership" ? "management" : "leadership");
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
